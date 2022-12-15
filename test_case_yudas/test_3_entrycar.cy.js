@@ -12,7 +12,7 @@ const credentials = {
   describe('Test Scenario For vehicles', () => {
 
     beforeEach('Visit website getparking', () => {
-        cy.visit("https://getparkingsite.000webhostapp.com/login.php");
+        cy.visit("http://localhost/siparkir/login.php");
         loginUsingForm(credentials)
         cy.location("pathname").should("include", "/home.php");
 
@@ -21,27 +21,32 @@ const credentials = {
 
      });
 
-     it('Test Case 1 - error plat nomor kosong', () => {
-        cy.get("input[name=jenis]").type("sedan").type("{enter}");
+        it('Test Case 1 - error plat nomor kosong', () => {
+            cy.get("input[name=jenis]").type("sedan").type("{enter}");
+            cy.on('window:alert', (text) => {
+            expect(text).to.contains('plat nomor tidak boleh kosong');
+          });
+      });
+
+      it('Test Case 2 - error jenis kendaraan kosong', () => {
+        cy.get("input[name=plat_nomor]").type("N 1337 T").type("{enter}");
         cy.on('window:alert', (text) => {
-        expect(text).to.contains('plat nomor tidak boleh kosong');
-      });
-  });
-
-    it('Test Case 2 - error jenis kendaraan kosong', () => {
-      cy.get("input[name=plat_nomor]").type("N 1337 T").type("{enter}");
-      cy.on('window:alert', (text) => {
-        expect(text).to.contains('jenis kendaraan tidak boleh kosong');
-
-      });
-  });
+          expect(text).to.contains('jenis kendaraan tidak boleh kosong');
+        });
+    });
     
      it('Test Case 3 - success entry', () => {
-            cy.get("input[name=plat_nomor]").type(" 1337 T");
+            cy.get("input[name=plat_nomor]").type("N 1337 T");
             cy.get("input[name=jenis]").type("motor").type("{enter}");
-            cy.location("pathname").should("include", "/mobilaktif.php");
+            cy.location("pathname").should("include", "/log-parkir.php");
      });
 
-      
-    
+     it('Test Case 4 - Error Mobil telah terdaftar', () => {
+      cy.get("input[name=plat_nomor]").type("N 1337 T");
+      cy.get("input[name=jenis]").type("motor").type("{enter}");
+      cy.on('window:alert', (text) => {
+        expect(text).to.contains('Mobil telah terdaftar');
+        });
+      });
+
    })

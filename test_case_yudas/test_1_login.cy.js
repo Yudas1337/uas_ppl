@@ -11,7 +11,7 @@ const credentials = {
    }
 
    beforeEach('Visit login page', () => {
-    cy.visit("https://getparkingsite.000webhostapp.com/login.php");
+    cy.visit("http://localhost/siparkir/login.php");
  });
    
    describe('Test Case For Login', () => {

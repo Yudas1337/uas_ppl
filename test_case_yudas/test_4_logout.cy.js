@@ -1,7 +1,7 @@
 const credentials = {
     username: 'admin',
     password: 'admin'
-  };
+};
   
   const loginUsingForm = (credentials) => {
       // Enter username and password in form inputs
